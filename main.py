@@ -1,12 +1,13 @@
+import logging
 from typing import List
+
 from fastapi import FastAPI
+
 import schemas
 from db import database, users, phones, mails
-import logging
 from log.mainlog import main_log
 
 app = FastAPI()
-
 
 logger = logging.getLogger(__name__)
 main_log(logger)
@@ -60,8 +61,6 @@ async def update_user(user: schemas.UserUpdate):
     logger.warning("user add")
     return await database.execute(query)
 
-    return read_user(user.id)
-
 
 @app.delete('/users/{users_id}')
 async def delete_user(user: schemas.UserDelete):
@@ -106,8 +105,6 @@ async def update_phone(phone: schemas.PhoneUpdate):
 
     return await database.execute(query)
 
-    return read_phone(phone.id)
-
 
 @app.delete('/phones/{phones_id}')
 async def delete_phone(phone: schemas.PhoneDelete):
@@ -150,8 +147,6 @@ async def update_mail(mail: schemas.MailUpdate):
     )
     logger.warning('mail changed')
     return await database.execute(query)
-
-    return read_mail(mail.id)
 
 
 @app.delete('/mails/{mails_id}')
