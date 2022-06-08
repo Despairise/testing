@@ -1,26 +1,20 @@
+import os
 import psycopg2
-
-try:
-    connection = psycopg2.connect(
-        host='127.0.0.1',
-        user='postgres',
-        password='12131415ee',
-        dbname='ab_db'
-    )
-
-    cursor = connection.cursor()
-
-    insert_query = """INSERT INTO users (id, full_name, gender, b_day, address) VALUES 
-            ('1','Ivanov Ivan Ivanovich', 'male', '1976.14.02', 'Moscow'),
-            ('2','Melnikova Kseniia Vitalevna', 'female', '1998.12.07', 'Krasnoyarsk'),
-            ('3','Pimenov Maksim Evgenevich', 'male', '1986.20.06', 'Novosibirsk'),
-            ('4','SHpak Angelina Eduardovna', 'female', '1970.21.05', 'Moscow'),
-            ('5','Bogoslovskii Artem Mikhailovich', 'male', '2000.15.09', 'Samara');"""
-
-    cursor.execute(insert_query)
-    connection.commit()
+from datetime import date
 
 
-finally:
-    if connection:
-        connection.close()
+DATABASE_URL = os.environ.get('DATABASE_URL')
+connection = psycopg2.connect(DATABASE_URL)
+
+cursor = connection.cursor()
+
+insert_query = f"""INSERT INTO users (full_name, gender, b_day, address) VALUES 
+        ('Ivanov Ivan Ivanovich', 'male', '{date(1976, 12, 14)}', 'Moscow'),
+        ('Melnikova Kseniia Vitalevna', 'female', '{date(1986, 7, 12)}', 'Krasnoyarsk'),
+        ('Pimenov Maksim Evgenevich', 'male', '{date(1994, 6, 20)}', 'Novosibirsk'),
+        ('SHpak Angelina Eduardovna', 'female', '{date(1975, 5, 21)}', 'Moscow'),
+        ('Bogoslovskii Artem Mikhailovich', 'male', '{date(1976, 9, 15)}', 'Samara');"""
+
+cursor.execute(insert_query)
+connection.commit()
+connection.close()

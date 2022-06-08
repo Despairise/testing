@@ -2,10 +2,9 @@ import logging
 import logging.handlers
 
 
-def main_log(logger):
-    logger.setLevel(logging.WARNING)
-    fh = logging.handlers.RotatingFileHandler(filename='log/readme.log', backupCount=50)
-    fh.setLevel(logging.WARNING)
-    formatter = logging.Formatter('%(asctime)s :: %(name)s :: %(message)s :: %(levelname)s')
-    fh.setFormatter(formatter)
-    logger.addHandler(fh)
+def main_log():
+    file_handler = logging.FileHandler('./log/readme.log')
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s] %(filename)s: %(message)s',
+                        handlers=[file_handler])
+    logger = logging.getLogger(__name__)
+    return logger

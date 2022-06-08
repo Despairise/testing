@@ -1,26 +1,19 @@
+import os
 import psycopg2
 
-try:
-    connection = psycopg2.connect(
-        host='127.0.0.1',
-        user='postgres',
-        password='12131415ee',
-        dbname='ab_db'
-    )
 
-    cursor = connection.cursor()
+DATABASE_URL = os.environ.get('DATABASE_URL')
+connection = psycopg2.connect(DATABASE_URL)
 
-    insert_query = """INSERT INTO mails (id, type, mail_address) VALUES 
-            ('1','personal', 'euprececoilla-9977@yopmail.com'),
-            ('2','work', 'prakigrabroitau-2682@yopmail.com'),
-            ('3','work', 'troicrawoimexo-2067@yopmail.com'),
-            ('4','personal','hugriyallemmau-2771@yopmail.com'),
-            ('5','work', 'xefafouddeutra-5559@yopmail.com');"""
+cursor = connection.cursor()
 
-    cursor.execute(insert_query)
-    connection.commit()
+insert_query = """INSERT INTO mails (mail_type, mail_address, owner_id) VALUES 
+        ('personal', 'euprececoilla-9977@yopmail.com', 1),
+        ('work', 'prakigrabroitau-2682@yopmail.com', 2),
+        ('work', 'troicrawoimexo-2067@yopmail.com', 3),
+        ('personal','hugriyallemmau-2771@yopmail.com', 4),
+        ('work', 'xefafouddeutra-5559@yopmail.com', 5);"""
 
-
-finally:
-    if connection:
-        connection.close()
+cursor.execute(insert_query)
+connection.commit()
+connection.close()

@@ -1,26 +1,19 @@
+import os
 import psycopg2
 
-try:
-    connection = psycopg2.connect(
-        host='127.0.0.1',
-        user='postgres',
-        password='12131415ee',
-        dbname='ab_db'
-    )
 
-    cursor = connection.cursor()
+DATABASE_URL = os.environ.get('DATABASE_URL')
+connection = psycopg2.connect(DATABASE_URL)
 
-    insert_query = """INSERT INTO phones (id, type, number_phone) VALUES 
-            ('1','city', '342-434-275'),
-            ('2','mobile', '7-823-234-22-44'),
-            ('3','mobile', '7-323-678-43-81'),
-            ('4','mobile','7-967-434-21-78'),
-            ('5','city', '222-432-221');"""
+cursor = connection.cursor()
 
-    cursor.execute(insert_query)
-    connection.commit()
+insert_query = """INSERT INTO phones (phone_type, number_phone, owner_id) VALUES 
+        ('city', '3342434275', 1),
+        ('mobile', '9232342244', 2),
+        ('mobile', '9236784381', 3),
+        ('mobile','9674342178', 4),
+        ('city', '3222432221', 5);"""
 
-
-finally:
-    if connection:
-        connection.close()
+cursor.execute(insert_query)
+connection.commit()
+connection.close()

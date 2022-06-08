@@ -1,4 +1,5 @@
-__init__.py
 /venv
 .idea/
+*.pyc
 __pycache__/
+./log/readme.log
